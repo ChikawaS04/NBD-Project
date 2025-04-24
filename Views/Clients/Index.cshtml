@@ -1,0 +1,157 @@
+﻿@model PaginatedList<NBD3.Models.Client>
+@{
+    ViewData["Title"] = "Client Management";
+}
+
+<div class="mt-4 mb-4">
+    <h1>Client Management</h1>
+</div>
+
+<div class="container mt-3">
+    <div class="row justify-content-end">
+        <div class="col-auto mb-2">
+            @if (!User.IsInRole("Designer") )
+                    {
+            <a asp-action="Create" class="btn btn-xs btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Create">Create New</a>
+                    }
+        </div>
+        <div class="col-0"></div>
+    </div>
+</div>
+
+<form asp-action="Index" asp-controller="Clients" method="get">
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                Filter/Search @ViewData["numberFilters"]
+            </button>
+        </div>
+    </div>
+
+    <div class="row collapse" id="collapseFilter">
+        <div class="col-md-6">
+            <label for="companyFilter">Company Name:</label>
+            <input type="text" id="companyFilter" name="companyFilter" class="form-control" value="@ViewData["companyFilter"]" placeholder="Enter company name..." />
+        </div>
+
+        <div class="col-md-6">
+            <label for="lastNameSearch">Last Name Search:</label>
+            <input type="text" id="lastNameSearch" name="lastNameSearch" class="form-control" value="@ViewData["lastNameSearch"]" placeholder="Enter last name..." />
+        </div>
+
+        <div class="col-md-12 mt-2">
+            <button type="submit" class="btn btn-primary">Filter</button>
+            <button type="button" class="btn btn-secondary ml-2" onclick="clearFilters()">Clear Filters</button>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead>
+        <tr class="table-dark">
+            <th>
+                <a asp-action="Index" asp-route-sortField="ClientCommpanyName" asp-route-sortDirection="@(GetSortDirection("ClientCommpanyName"))">
+                    @Html.DisplayNameFor(model => model[0].ClientCommpanyName)
+                </a>
+            </th>
+            <th>
+                <a asp-action="Index" asp-route-sortField="ContactFullName" asp-route-sortDirection="@(GetSortDirection("ContactFullName"))">
+                    @Html.DisplayNameFor(model => model[0].ContactFullName)
+                </a>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].ClientPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].ClientEmail)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].ClientFullAddress)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="table-dark">
+                <td>@Html.DisplayFor(modelItem => item.ClientCommpanyName)</td>
+                <td>@Html.DisplayFor(modelItem => item.ContactFullName)</td>
+                <td>@Html.DisplayFor(modelItem => item.ClientPhone)</td>
+                <td>@Html.DisplayFor(modelItem => item.ClientEmail)</td>
+                <td>@Html.DisplayFor(modelItem => item.ClientFullAddress)</td>
+                <td class="text-center" style="padding:5px;">
+                    @if (!User.IsInRole("Designer") )
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.ClientId" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" style="font-size: 14px;">&#x270E;</a>
+                    }
+                        <a asp-controller="ClientProject" asp-action="Index" asp-route-ClientId="@item.ClientId" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Details" style="font-size: 14px;">&#x1F50E;</a>
+
+                    @if (!User.IsInRole("Designer") &&   !User.IsInRole("Sales Assoc"))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.ClientId" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" style="font-size: 14px;" onclick="return confirmDeletion(this)">&#x274C;</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="fixed-pagination d-flex justify-content-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" aria-label="First" asp-action="Index" asp-route-page="1">First</a>
+            </li>
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" aria-label="Previous" asp-action="Index" asp-route-page="@(Model.PageIndex - 1)">Previous</a>
+            </li>
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" aria-label="Next" asp-action="Index" asp-route-page="@(Model.PageIndex + 1)">Next</a>
+            </li>
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" aria-label="Last" asp-action="Index" asp-route-page="@Model.TotalPages">Last</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<script>
+    function confirmDeletion(linkElement) {
+        const confirmationMessage = 'Hint: Are you sure you want to delete? (Deleting here will delete all information)';
+        const isConfirmed = confirm(confirmationMessage);
+
+        if (isConfirmed) {
+            return true; // 允许链接导航
+        } else {
+            return false; // 阻止链接导航
+        }
+    }
+</script>
+@{
+    string GetSortDirection(string fieldName)
+    {
+        if (ViewData["sortField"] == null || ViewData["sortField"].ToString() != fieldName)
+        {
+            return "asc";
+        }
+
+        return ViewData["sortDirection"].ToString() == "asc" ? "desc" : "asc";
+    }
+}
+
+ <script>
+    function clearFilters() {
+        document.getElementById("companyFilter").value = "";
+        document.getElementById("lastNameSearch").value = "";
+        document.querySelector('form').submit(); // Trigger form submission after clearing filters
+    }
+</script> 

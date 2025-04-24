@@ -1,0 +1,36 @@
+﻿@model NBD3.Models.Labour
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Labour</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LabourType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LabourType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LabourPriceHour)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LabourPriceHour)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LabourCostHour)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LabourCostHour)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" class="btn btn-primary"  asp-route-id="@Model?.LabourID">Edit</a>
+    <a asp-action="Index" class="btn btn-outline-secondary ml-2">Back to List</a>
+</div>

@@ -1,0 +1,275 @@
+﻿@model NBD3.Models.Bid
+
+@{
+	ViewData["Title"] = "Edit";
+}
+
+
+<h2>Bid Edit</h2>
+<div class="row">
+	<div class="col-md-3 p-3 my-4 bg-dark rounded-3 text-center">
+		<dd class="text-bg-warning text-lg-center text-uppercase">
+			<h4>@Html.DisplayFor(model => model.Project.ProjectName)</h4>
+		</dd>
+		<h4 class="table-dark">
+			<strong>Bid Amount: @((Model.LabourDetails.Sum(lt => lt.Labour.LabourPriceHour * lt.Quantity) + @Model.MaterialDetails.Sum(mt => mt.Inventory.InventoryPriceList * mt.Quantity) + @Model.BidAmount).ToString("C"))</strong>
+		</h4>
+		<h6>
+			(Labour: @(Model.LabourDetails.Sum(lt => lt.Labour.LabourPriceHour * lt.Quantity).ToString("C")) Material: @(Model.MaterialDetails.Sum(mt => mt.Inventory.InventoryPriceList * mt.Quantity).ToString("C")) )
+		</h6>
+		<h5>
+			<strong>Bid Cost: @((Model.LabourDetails.Sum(lt => lt.Labour.LabourCostHour * lt.Quantity) + @Model.MaterialDetails.Sum(mt => mt.Inventory.InventoryPriceList * mt.Quantity)).ToString("C"))</strong>
+		</h5>
+		<hr />
+
+		<form asp-action="Edit">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<input type="hidden" asp-for="BidId" />
+			<h5>Approves</h5>
+			<div class="form-group row">
+				<div class="col">
+					<div class="form-group form-check form-switch">
+						<label class="form-check-label">
+							<input id="ManApprove" class="form-check-input" asp-for="BidApprove" /> @Html.DisplayNameFor(model => model.BidApprove)
+						</label>
+					</div>
+				</div>
+				<div class="col">
+					<div class="form-check form-switch">
+						<label class="form-check-label">
+							<input id="CliApprove" class="form-check-input" asp-for="BidApproveClient" /> @Html.DisplayNameFor(model => model.BidApproveClient)
+						</label>
+					</div>
+				</div>
+			</div>
+			<hr />
+			<h5>Rejects</h5>
+			<div class="form-group row">
+				<div class="col">
+					<div class="form-group form-check form-switch">
+						<label class="form-check-label">
+							<input id="ManReject" class="form-check-input" asp-for="BidRejectedManager" /> @Html.DisplayNameFor(model => model.BidRejectedManager)
+						</label>
+					</div>
+				</div>
+				<div class="col">
+					<div class="form-group form-check form-switch">
+						<label class="form-check-label">
+							<input id="CliReject" class="form-check-input" asp-for="BidRejectedClient" /> @Html.DisplayNameFor(model => model.BidRejectedClient)
+						</label>
+					</div>
+				</div>
+			</div>
+			<hr />
+			<div class="form-group">
+				<label asp-for="BidNoteReason" class="control-label"></label>
+				<textarea asp-for="BidNoteReason" class="form-control"></textarea>
+				<span asp-validation-for="BidNoteReason" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="BidAmount" class="control-label"></label>
+				<input asp-for="BidAmount" class="form-control" />
+				<span asp-validation-for="BidAmount" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="BidDate" class="control-label"></label>
+				<input asp-for="BidDate" class="form-control" value="@Model.BidDate.ToString("yyyy-MM-dd")" />
+				<span asp-validation-for="BidDate" class="text-danger"></span>
+			</div>
+
+			<div class="form-group">
+				<label hidden asp-for="ProjectID" class="control-label"></label>
+				<select hidden asp-for="ProjectID" class="form-control" asp-items="ViewBag.ProjectID"></select>
+				<span asp-validation-for="ProjectID" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label>Bid Status</label>
+				<select asp-for="BidStatus" class="form-control" asp-items="Html.GetEnumSelectList<BidStatusList>()"></select>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Submit" class="btn btn-warning btn-lg" />
+			</div>
+		</form>
+	</div>
+
+	<div class="col-md-8">
+		<div class="card  form-group">
+			<a asp-action="Details" asp-route-id="@Model.BidId" class="btn btn-lg btn-success">Go to Edit Detail   &#9755;</a>
+		</div>
+		<div class="form-group">
+			<div class="card">
+				<h4 class="card-header">Labours</h4>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-sm">
+							<thead>
+								<tr class="table-dark">
+									<th>Labour</th>
+									<th class="text-center">Price hour</th>
+									<th class="text-center">Quantity</th>
+									<th class="text-center">Extended Price</th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var labourDetail in Model.LabourDetails)
+								{
+									<tr class="table-dark">
+										<td>@labourDetail.Labour.LabourType</td>
+										<td class="text-center">@labourDetail.Labour.LabourPriceHour</td>
+										<td class="text-center">@labourDetail.Quantity</td>
+										<td class="text-center">@(labourDetail.Labour.LabourPriceHour * labourDetail.Quantity)</td>
+									</tr>
+								}
+								<tr class="table-dark">
+									<td><strong>Labour Total</strong></td>
+									<td></td>
+									<td>@Model.LabourDetails.Sum(cd => cd.Quantity)</td>
+									<td>@Model.LabourDetails.Sum(cd => cd.Labour.LabourPriceHour * cd.Quantity).ToString("C")</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<hr />
+				</div>
+			</div>
+		</div>
+
+
+
+		<div class="form-group">
+			<div class="card">
+				<h4 class="card-header">Materials</h4>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-sm">
+							<thead>
+								<tr class="table-dark">
+									<th>Code</th>
+									<th class="text-center">InventoryUnitType</th>
+									<th class="text-center">Quantity</th>
+									<th class="text-center">Unit Price</th>
+									<th class="text-center">Extended Price</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var materialDetail in Model.MaterialDetails)
+								{
+									<tr class="table-dark">
+										<td>@materialDetail.Inventory.InventoryCode</td>
+										<td class="text-center">@materialDetail.Inventory.InventoryUnitType</td>
+										<td class="text-center">@materialDetail.Quantity</td>
+										<td class="text-center">@(materialDetail.Inventory.InventoryPriceList)</td>
+										<td class="text-center">@(materialDetail.Inventory.InventoryPriceList * materialDetail.Quantity)</td>
+										<td>
+										</td>
+									</tr>
+								}
+								<tr class="table-dark">
+									<td><strong>Material Total</strong></td>
+									<td></td>
+									<td><strong>@Model.MaterialDetails.Sum(cd => cd.Quantity)</strong></td>
+									<td></td>
+									<td><strong>@Model.MaterialDetails.Sum(cd => cd.Quantity * cd.Inventory.InventoryPriceList).ToString("C")</strong></td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<hr />
+				</div>
+			</div>
+		</div>
+
+
+
+
+		<div class="form-group">
+			<div class="card">
+				<h4 class="card-header">Staff</h4>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table table-sm">
+							<thead>
+								<tr class="table-dark">
+									<th>Name</th>
+									<th>Title</th>
+									<th>Phone</th>
+									<th>email</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								@foreach (var staffDetail in Model.StaffDetails)
+								{
+									<tr class="table-dark">
+										<td>@staffDetail.Staff.StaffFormalName</td>
+										<td>@staffDetail.Staff.StaffTitle</td>
+										<td>@staffDetail.Staff.StaffPhoneFormat</td>
+										<td>@staffDetail.Staff.StaffEmail</td>
+										<td>
+										</td>
+									</tr>
+								}
+								<tr class="table-dark">
+									<td><strong>STaff Total</strong></td>
+									<td></td>
+									<td>@Model.StaffDetails.Count()</td>
+									<td></td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<hr />
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+
+
+<div>
+	<a asp-action="Index" class="btn btn-outline-secondary ml-2">Back to Bid List</a>
+</div>
+
+@section Scripts {
+
+	<script>
+
+		$(document).ready(function () {
+			$('#ManApprove').on('change', function (e) {
+				$('#ManReject').not(this).prop('checked', false);
+			});
+		});
+	</script>
+
+	<script>
+
+		$(document).ready(function () {
+			$('#ManReject').on('change', function (e) {
+				$('#ManApprove').not(this).prop('checked', false);
+			});
+		});
+	</script>
+
+	<script>
+
+		$(document).ready(function () {
+			$('#CliApprove').on('change', function (e) {
+				$('#CliReject').not(this).prop('checked', false);
+			});
+		});
+	</script>
+
+	<script>
+
+		$(document).ready(function () {
+			$('#CliReject').on('change', function (e) {
+				$('#CliApprove').not(this).prop('checked', false);
+			});
+		});
+	</script>
+
+}

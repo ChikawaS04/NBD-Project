@@ -1,0 +1,39 @@
+﻿@model NBD3.Models.Labour
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Labour</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LabourType)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LabourType)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LabourPriceHour)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LabourPriceHour)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LabourCostHour)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LabourCostHour)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="LabourID" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> 
+        <a asp-action="Index" class="btn btn-outline-secondary ml-2">Back to List</a>
+    </form>
+</div>

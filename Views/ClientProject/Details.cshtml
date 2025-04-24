@@ -1,0 +1,46 @@
+﻿@model NBD3.Models.Project
+
+@{
+    ViewData["Title"] = "Project Details";
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <div class="col-sm-4">
+                    <dt>Project Name:</dt>
+                    <dd>@Model.ProjectName</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Description:</dt>
+                    <dd>@Model.ProjectDescription</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Start Date:</dt>
+                    <dd>@Model.ProjectStartDate</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>End Date:</dt>
+                    <dd>@Model.ProjectEndDate</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Client:</dt>
+                    <dd>@Model.Client.ContactFullName</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Project Location:</dt>
+                    <dd>@Model.Location.LocationName</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a asp-action="Update" class="btn btn-primary"  asp-route-id="@Model?.ProjectId">Update</a> |
+        <partial name="_BackToList" />
+    </div>
+</div>
+

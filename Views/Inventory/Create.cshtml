@@ -1,0 +1,54 @@
+﻿@model NBD3.Models.Inventory
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Inventory</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="InventoryCode" class="control-label"></label>
+                <input asp-for="InventoryCode" class="form-control" placeholder="eg. AAAA1"/>
+                <span asp-validation-for="InventoryCode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryDescription" class="control-label"></label>
+                <input asp-for="InventoryDescription" class="form-control" placeholder="Enter description..."/>
+                <span asp-validation-for="InventoryDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryQuantity" class="control-label"></label>
+                <input asp-for="InventoryQuantity" class="form-control" placeholder="0"/>
+                <span asp-validation-for="InventoryQuantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryUnitType" class="control-label"></label>
+                <input asp-for="InventoryUnitType" class="form-control" placeholder="eg. Yard"/>
+                <span asp-validation-for="InventoryUnitType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="InventoryPriceList" class="control-label"></label>
+                <input asp-for="InventoryPriceList" class="form-control" placeholder="0.00"/>
+                <span asp-validation-for="InventoryPriceList" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaterialCategoryID" class="control-label"></label>
+                <select asp-for="MaterialCategoryID" class ="form-control" asp-items="ViewBag.MaterialCategoryID"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

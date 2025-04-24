@@ -1,0 +1,134 @@
+﻿@model PaginatedList<NBD3.Models.Inventory>
+
+@{
+    ViewData["Title"] = "Inventory List";
+}@{
+    var sortField = ViewData["sortField"] as string;
+}
+@{
+    var sortDirection = ViewData["sortDirection"] as string;
+}
+
+<div class="mt-4 mb-4">
+	<h1>Inventory List</h1>
+</div>
+
+
+<div class="container mt-2">
+    <div class="row justify-content-end">
+        <div class="col-auto mb-2">
+            <a asp-action="Create" class="btn btn-xs btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Create">Create New</a>
+        </div>
+        <div class="col-0"></div>
+    </div>
+</div>
+<form asp-controller="Inventory" asp-action="Index" method="get" id="filterForm">
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                <i class="fas fa-filter"></i> Filter/Search <span class="badge bg-secondary">@ViewData["numberFilters"]</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="collapse" id="collapseFilter">
+        <div class="row">
+            <div class="col-md-6 mt-2">
+                <label for="inventoryCodeSearch">Search by Inventory Code:</label>
+                <input type="text" class="form-control" placeholder="Search By Inventory Code" id="inventoryCodeSearch" name="inventoryCodeSearch">
+            </div>
+            <div class="col-md-12 mt-2">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <button type="button" class="btn btn-secondary ml-2" onclick="clearFilters()">Clear Filters</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr class="table-dark">
+             <th>
+                <a asp-action="Index" asp-route-sortField="InventoryCode" asp-route-sortDirection="@(sortField == "InventoryCode" ? (sortDirection == "asc" ? "desc" : "asc") : "asc")">Inventory Code</a>
+            </th>
+            <th>
+                <a  asp-action="Index" asp-route-sortField="InventoryDescription" asp-route-sortDirection="@(sortField == "InventoryDescription" ? (sortDirection == "asc" ? "desc" : "asc") : "asc")">Inventory Description</a>
+            </th>
+            <th>
+                <a  asp-action="Index" asp-route-sortField="InventoryQuantity" asp-route-sortDirection="@(sortField == "InventoryQuantity" ? (sortDirection == "asc" ? "desc" : "asc") : "asc")">Inventory Quantity</a>
+            </th>
+            <th>
+                <a  asp-action="Index" asp-route-sortField="InventoryUnitType" asp-route-sortDirection="@(sortField == "InventoryUnitType" ? (sortDirection == "asc" ? "desc" : "asc") : "asc")">Inventory UnitType</a>
+            </th>
+            <th>
+                <a  asp-action="Index" asp-route-sortField="InventoryPriceList" asp-route-sortDirection="@(sortField == "InventoryPriceList" ? (sortDirection == "asc" ? "desc" : "asc") : "asc")">Inventory PriceList</a>
+            </th>
+            <th>
+                <a  asp-action="Index" asp-route-sortField="MaterialCategory" asp-route-sortDirection="@(sortField == "MaterialCategory" ? (sortDirection == "asc" ? "desc" : "asc") : "asc")">Material Category</a>
+            </th>
+            <th style="color:white;font-weight:bold;text-align:center">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr class="table-dark">
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryUnitType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InventoryPriceList)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MaterialCategory.CategoryName)
+                </td>
+                <td>
+                   
+                    <a asp-action="Edit" asp-route-id="@item.InventoryID" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" style="font-size: 14px;">&#x270E;</a>
+                    <a asp-action="Details" asp-route-id="@item.InventoryID" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Details" style="font-size: 14px;">&#x1F50E;</a>
+                    <a asp-action="Delete" asp-route-id="@item.InventoryID" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" style="font-size: 14px;">&#x274C;</a>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+<div class="d-flex justify-content-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" aria-label="Previous" asp-action="Index" asp-route-page="1">First</a>
+            </li>
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" aria-label="Previous" asp-action="Index" asp-route-page="@(Model.PageIndex - 1)">Previous</a>
+            </li>
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" aria-label="Next" asp-action="Index" asp-route-page="@(Model.PageIndex + 1)">Next</a>
+            </li>
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" aria-label="Next" asp-action="Index" asp-route-page="@Model.TotalPages">Last</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+<script>
+    function clearFilters() {
+        document.getElementById("inventoryCodeSearch").value = ""; 
+        document.getElementById("filterForm").submit();
+    }
+</script>

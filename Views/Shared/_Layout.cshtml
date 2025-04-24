@@ -1,0 +1,137 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NBD3</title>
+    <link rel="stylesheet" href="~/css/nbd.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/animations.css" asp-append-version="true" />
+    <style>
+        /* Add animation to navbar dropdowns */
+        .navbar-nav .dropdown-menu {
+            display: none;
+            animation: fadeInDown 0.5s forwards;
+        }
+
+            .navbar-nav .dropdown-menu.show {
+                display: block;
+            }
+
+    </style>
+</head>
+<body>
+        <nav id="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark" data-bs-theme="dark">
+            <div class="container-fluid">
+            <!-- Brand/logo -->
+            <a class="navbar-brand" href="#">
+                <img src="~/It Smart.png" alt="IT Smart" style="max-height: 50px; width: auto; border-radius: 50%;">
+            </a>
+          
+            <!-- Navbar toggler for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            @if (SignInManager.IsSignedIn(User))
+            {
+
+
+                <ul class="navbar-nav flex-grow-1">
+                    <li class="nav-item">
+                        <ul class="navbar-nav flex-grow-1">
+                            @if (User.IsInRole("Designer") || User.IsInRole("Sales Assoc"))
+                            {
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index" style="font-size: 18px;">Home</a>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Clients" asp-action="Index" style="font-size: 18px;">Clients</a>
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Projects" asp-action="Index" style="font-size: 18px;">Projects</a>
+                                    @* 
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Locations" asp-action="Index">Location</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Status" asp-action="Index">Project Status</a></li> *@
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Bid" asp-action="Index" style="font-size: 18px;">Bids</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index" style="font-size: 18px;">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Clients" asp-action="Index" style="font-size: 18px;">Clients</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="projectDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 18px;">
+                                        Project Management
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="projectDropdown">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Projects" asp-action="Index">Project</a></li>
+
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Locations" asp-action="Index">Location</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Status" asp-action="Index">Project Status</a></li>
+                                    </ul>
+                                </li>
+
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="" asp-controller="Bid" asp-action="Index" style="font-size: 18px;">Bids</a>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" id="resourceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" style="font-size: 18px;">
+                                        Resource Management
+                                    </a>
+                                    <ul class="dropdown-menu" aria-labelledby="resourceDropdown">
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Staff" asp-action="Index">Staff</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Labour" asp-action="Index">Labour</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="Inventory" asp-action="Index">Inventory</a></li>
+                                        <li><a class="dropdown-item" asp-area="" asp-controller="UserRole" asp-action="Index">User Roles</a></li>
+                                    </ul>
+                                </li>
+                            }
+                    </li> 
+                       </ul>
+                
+            }
+        </div>
+
+               <partial name="_LoginPartial" />
+               </nav>
+            
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2024 - NBD3 - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script>
+        $(document).ready(function () {
+            $('#signInLink').click(function () {
+                $('#navbar').hide(); // Hide the navbar
+            });
+        });
+    </script>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+                </html>
+                

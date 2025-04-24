@@ -1,0 +1,43 @@
+﻿@model IEnumerable<NBD3.Models.Status>
+
+@{
+    ViewData["Title"] = "Index";
+}
+<div class="mt-4 mb-4">
+    <h1>Project Status</h1>    
+</div>
+
+
+<div class="container mt-2">
+    <div class="row justify-content-end">
+        <div class="col-auto mb-2">
+            <a asp-action="Create" class="btn btn-xs btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Create">Create New</a>
+        </div>
+        <div class="col-0"></div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th style="color:white">
+                @Html.DisplayNameFor(model => model.StatusName)
+            </th>
+            <th class="text-center" style="padding:5px;color:white;font-weight:bold">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td style="color:white">
+                @Html.DisplayFor(modelItem => item.StatusName)
+            </td>
+          
+                <td class="text-center" style="padding:5px;">
+                    <a asp-action="Edit" asp-route-id="@item.StatusID" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" style="font-size: 14px;">&#x270E;</a>
+                    <a asp-action="Details" asp-route-id="@item.StatusID" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Details" style="font-size: 14px;">&#x1F50E;</a>
+                    <a asp-action="Delete" asp-route-id="@item.StatusID" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" style="font-size: 14px;">&#x274C;</a>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>

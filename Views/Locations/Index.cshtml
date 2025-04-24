@@ -1,0 +1,62 @@
+﻿@model IEnumerable<NBD3.Models.Location>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="mt-4 mb-4">
+    <h1>Locations</h1>
+</div>
+
+
+
+<div class="container mt-2">
+    <div class="row justify-content-end">
+        <div class="col-auto mb-2">
+            <a asp-action="Create" class="btn btn-xs btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Create">Create New</a>
+        </div>
+        <div class="col-0"></div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr class="table-dark">
+            <th>
+                @Html.DisplayNameFor(model => model.LocationName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationFullAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationPhone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LocationContactPer)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+            <tr class="table-dark">
+            <td>
+                @Html.DisplayFor(modelItem => item.LocationName)
+            </td>
+            <td>
+                    @Html.DisplayFor(modelItem => item.LocationFullAddress)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LocationPhone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LocationContactPer)
+            </td>
+                <td class="text-center" style="padding:5px;">
+                    <a asp-action="Edit" asp-route-id="@item.LocationId" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" style="font-size: 14px;">&#x270E;</a>
+                    <a asp-action="Details" asp-route-id="@item.LocationId" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Details" style="font-size: 14px;">&#x1F50E;</a>
+                    <a asp-action="Delete" asp-route-id="@item.LocationId" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" style="font-size: 14px;">&#x274C;</a>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>

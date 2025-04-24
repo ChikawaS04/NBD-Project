@@ -1,0 +1,37 @@
+﻿@page
+@model AccessDeniedModel
+@{
+    ViewData["Title"] = "Access denied";
+}
+
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h2 class="mb-0">Access Denied</h2>
+                </div>
+                <div class="card-body">
+                    <p class="lead text-muted">
+                        We're sorry, but you do not have access to view this resource.
+                    </p>
+                    <p>
+                        If you believe you should have access, please contact your administrator for assistance.
+                    </p>
+                    <hr>
+                    <div class="text-center">
+                        @if (Request.Headers["Referer"].Any())
+                        {
+                            <a href="@Request.Headers["Referer"]" class="btn btn-primary">Back to list</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Index" class="btn btn-primary">Back to Dashboard</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

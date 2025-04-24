@@ -1,0 +1,159 @@
+﻿@model NBD3.Models.Client
+
+@{
+    ViewData["Title"] = "Create New Client";
+}
+
+<h1>Create New Client</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h4>Personal Information</h4>
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="ClientCommpanyName" class="control-label">Company Name</label>
+                        <input asp-for="ClientCommpanyName" class="form-control" placeholder="Enter company name..." />
+                        <span asp-validation-for="ClientCommpanyName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="ClientFirstName" class="control-label">First Name</label>
+                            <input asp-for="ClientFirstName" class="form-control" placeholder="Enter first name..." />
+                            <span asp-validation-for="ClientFirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="col">
+                            <label asp-for="ClientMiddleName" class="control-label">Middle Name</label>
+                            <input asp-for="ClientMiddleName" class="form-control" placeholder="Enter middle name..." />
+                            <span asp-validation-for="ClientMiddleName" class="text-danger"></span>
+                        </div>
+
+                        <div class="col">
+                            <label asp-for="ClientLastName" class="control-label">Last Name</label>
+                            <input asp-for="ClientLastName" class="form-control" placeholder="Enter last name..." />
+                            <span asp-validation-for="ClientLastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="form-section">
+                    <h4>Contact Information</h4>
+                    <hr />
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="ClientPhone" class="control-label">Phone</label>
+                            <input asp-for="ClientPhone" class="form-control" placeholder="(123)-456-7890" oninput="formatPhoneNumber(this)" />
+                            <span asp-validation-for="ClientPhone" class="text-danger"></span>
+                        </div>
+
+                        <div class="col">
+                            <label asp-for="ClientEmail" class="control-label">Email</label>
+                            <input asp-for="ClientEmail" class="form-control" placeholder="username@example.com" />
+                            <span asp-validation-for="ClientEmail" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Information -->
+                <div class="form-section">
+                    <h4>Address Information</h4>
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="ClientStreetAddress" class="control-label">Street Address</label>
+                        <input asp-for="ClientStreetAddress" class="form-control" placeholder="Enter street address..." />
+                        <span asp-validation-for="ClientStreetAddress" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="ClientPostalCode" class="control-label">Postal Code</label>
+                            <input asp-for="ClientPostalCode" class="form-control" placeholder="A1A 1A1" />
+                            <span asp-validation-for="ClientPostalCode" class="text-danger"></span>
+                        </div>
+
+                        <div class="col">
+                            <label asp-for="ClientCityAddress" class="control-label">City</label>
+                            <input asp-for="ClientCityAddress" class="form-control" placeholder="Enter city..." />
+                            <span asp-validation-for="ClientCityAddress" class="text-danger"></span>
+                        </div>
+
+                        <div class="col">
+                            <label asp-for="ClientCountryAddress" class="control-label">Country</label>
+                            <input asp-for="ClientCountryAddress" class="form-control" placeholder="Enter country..." readonly />
+                            <span asp-validation-for="ClientCountryAddress" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                    &nbsp;
+                    <a asp-action="Index" class="btn btn-outline-secondary">Back to Client List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    // Format phone number on input change
+    function formatPhoneNumber(input) {
+        // Remove all non-numeric characters from the input
+        var phoneNumber = input.value.replace(/\D/g, '');
+
+        // Format the phone number
+        var formattedPhoneNumber = format(phoneNumber);
+
+        // Update the input value with the formatted phone number
+        input.value = formattedPhoneNumber;
+    }
+
+    // Format phone number as (###) ###-####
+    function format(phoneNumber) {
+        var formattedPhoneNumber = '';
+
+        // Insert '(' after the first three digits
+        if (phoneNumber.length > 3) {
+            formattedPhoneNumber += '(' + phoneNumber.substring(0, 3) + ')';
+        } else {
+            formattedPhoneNumber += phoneNumber.substring(0, 3);
+        }
+
+        // Insert '-' after the sixth digit
+        if (phoneNumber.length > 3) {
+            formattedPhoneNumber += '-' + phoneNumber.substring(3, 6);
+        } else {
+            formattedPhoneNumber += phoneNumber.substring(3, 6);
+        }
+
+        // Add the remaining digits
+        if (phoneNumber.length > 6) {
+            formattedPhoneNumber += '-' + phoneNumber.substring(6, 10);
+        } else {
+            formattedPhoneNumber += phoneNumber.substring(6, 10);
+        }
+
+        return formattedPhoneNumber;
+    }
+
+    // Handle backspace key
+    function handleBackspace(event) {
+        if (event.keyCode === 8) {
+            // Allow backspace key to delete characters
+            return true;
+        }
+    }
+</script>
+
+
+
+

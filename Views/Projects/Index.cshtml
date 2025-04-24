@@ -1,0 +1,224 @@
+﻿@model PaginatedList<NBD3.Models.Project>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="mt-4 mb-4">
+    <h1>Projects</h1>
+</div>
+
+
+<div class="container mt-2">
+    <div class="row justify-content-end">
+        <div class="col-auto mb-2">
+           
+            <a asp-action="Create" class="btn btn-xs btn-outline-secondary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Create">Create New</a>
+        </div>
+        <div class="col-0"></div>
+    </div>
+</div>
+<form asp-action="Index" asp-controller="Projects" method="get">
+    <input type="hidden" name="sortDirection" value="@ViewData["sortDirection"]" />
+    <input type="hidden" name="sortField" value="@ViewData["sortField"]" />
+
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                Filter/Search @ViewData["numberFilters"]
+            </button>
+        </div>
+    </div>
+
+    <div class="row collapse" id="collapseFilter">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="searchString">Search by Project Name:</label>
+                    <input type="text" name="searchString" class="form-control" placeholder="Enter project name" value="@ViewBag.SearchString" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="clientId">Select Client:</label>
+                    <select name="clientId" class="form-control">
+                        <option value="">All Clients</option>
+                        @foreach (var client in ViewBag.Clients)
+                        {
+                            <option value="@client.ClientId">@client.ContactFullName</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="startDateFilter">Start Date:</label>
+                    <input type="date" name="startDateFilter" class="form-control" value="@ViewBag.StartDateFilter?.ToString("yyyy-MM-dd")" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="endDateFilter">End Date:</label>
+                    <input type="date" name="endDateFilter" class="form-control" value="@ViewBag.EndDateFilter?.ToString("yyyy-MM-dd")" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <button type="button" class="btn btn-secondary ml-2" onclick="clearFilters()">Clear Filters</button>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="form-group">
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-dark">
+                    <thead>
+                        <tr class="table-dark">
+                            <th style="width: 15%;">
+                                <!-- Adjust width as needed -->
+                                <a asp-action="Index" asp-route-sortOrder="@ViewBag.NameSortParam">Project Name</a>
+                            </th>
+                            <th style="width: 20%;">
+                                <!-- Adjust width as needed -->
+                                <a asp-action="Index" asp-route-sortOrder="@ViewBag.DescriptionSortParam">Project Description</a>
+                            </th>
+
+                            <th style="width: 10%;">
+                                <!-- Adjust width as needed -->
+                                <a asp-action="Index" asp-route-sortOrder="@ViewBag.StartDateSortParam">Start Date</a>
+                            </th>
+                            <th style="width: 10%;">
+                                <!-- Adjust width as needed -->
+                                <a asp-action="Index" asp-route-sortOrder="@ViewBag.EndDateSortParam">End Date</a>
+                            </th>
+                            <th style="width: 10%;">
+                                <!-- Adjust width as needed -->
+                                <a asp-action="Index" asp-route-sortOrder="@ViewBag.ClientSortParam">Client</a>
+                            </th>
+                            <th style="width: 10%;">
+                                <!-- Adjust width as needed -->
+                                <a asp-action="Index" asp-route-sortOrder="@ViewBag.LocationSortParam">Location</a>
+                            </th>
+                            <th style="width: 20%;">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="projectTableBody">
+                        @foreach (var item in Model)
+                        {
+                            <tr class="table-dark">
+                                <td>@Html.DisplayFor(modelItem => item.ProjectName)</td>
+                                <td>
+                                    <div class="description-cell" style="overflow: hidden;">
+                                        @if (!string.IsNullOrEmpty(item.ProjectDescription))
+                                        {
+                                            if (item.ProjectDescription.Length > 50)
+                                            {
+                                                <span>@item.ProjectDescription.Substring(0, 50)</span>
+                                                <span id="more-@item.ProjectId" style="display: none;">@item.ProjectDescription.Substring(50)</span>
+                                                <a href="#" class="read-more" data-target="more-@item.ProjectId">Read More</a>
+                                            }
+                                            else
+                                            {
+                                                <span>@item.ProjectDescription</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span>No description available</span>
+                                        }
+                                    </div>
+                                </td>
+
+                                <td>@Html.DisplayFor(modelItem => item.ProjectStartDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.ProjectEndDate)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Client.ContactFullName)</td>
+                                <td>@Html.DisplayFor(modelItem => item.Location.LocationName)</td>
+                                <td class="text-center actions-cell" style="padding:5px;">
+                                    <a asp-action="Edit" asp-route-id="@item.ProjectId" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit" style="font-size: 14px;">&#x270E;</a>
+                                    <a asp-action="Details" asp-route-id="@item.ProjectId" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Details" style="font-size: 14px;">&#x1F50E;</a>
+                                    @if (!User.IsInRole("Designer") && !User.IsInRole("Sales Assoc"))
+                                    {
+                                        <a asp-action="Delete" asp-route-id="@item.ProjectId" class="btn btn-xs btn-outline-primary" role="button" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete" style="font-size: 14px;">&#x274C;</a>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-center mt-4">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" aria-label="Previous" asp-action="Index" asp-route-page="1">First</a>
+            </li>
+            <li class="page-item @(Model.PageIndex == 1 ? "disabled" : "")">
+                <a class="page-link" aria-label="Previous" asp-action="Index" asp-route-page="@(Model.PageIndex - 1)">Previous</a>
+            </li>
+            @for (int i = 1; i <= Model.TotalPages; i++)
+            {
+                <li class="page-item @(i == Model.PageIndex ? "active" : "")">
+                    <a class="page-link" asp-action="Index" asp-route-page="@i">@i</a>
+                </li>
+            }
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" aria-label="Next" asp-action="Index" asp-route-page="@(Model.PageIndex + 1)">Next</a>
+            </li>
+            <li class="page-item @(Model.PageIndex == Model.TotalPages ? "disabled" : "")">
+                <a class="page-link" aria-label="Next" asp-action="Index" asp-route-page="@Model.TotalPages">Last</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<script>
+    function clearFilters() {
+        document.querySelector('input[name="searchString"]').value = "";
+        document.querySelector('select[name="clientId"]').value = "";
+        document.querySelector('input[name="startDateFilter"]').value = "";
+        document.querySelector('input[name="endDateFilter"]').value = "";
+
+        // Show all rows in the table
+        var tableBody = document.getElementById("projectTableBody");
+        var rows = tableBody.getElementsByTagName("tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].style.display = "";
+        }
+
+        // Trigger form submission
+        document.querySelector('form').submit();
+    }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const readMoreLinks = document.querySelectorAll(".read-more");
+
+        readMoreLinks.forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                const targetId = this.getAttribute("data-target");
+                const moreText = document.getElementById(targetId);
+
+                // Toggle the visibility of the additional text
+                if (moreText.style.display === "none" || moreText.style.display === "") {
+                    moreText.style.display = "inline"; // Display the additional text
+                    this.textContent = "Read Less"; // Change the button text
+                } else {
+                    moreText.style.display = "none"; // Hide the additional text
+                    this.textContent = "Read More"; // Change the button text
+                }
+            });
+        });
+    });
+</script>

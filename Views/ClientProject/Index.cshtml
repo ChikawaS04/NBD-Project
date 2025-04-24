@@ -1,0 +1,152 @@
+﻿@model IEnumerable<NBD3.Models.Project>
+
+@{
+    NBD3.Models.Client clients = (NBD3.Models.Client)ViewBag.Client;
+    <partial name="_ClientDetail" model="clients" />
+    ViewData["Title"] = "Index";
+}
+
+
+<form asp-action="Index" method="get">
+ 
+    <input type="hidden" name="ClientID" value="@clients.ClientId" />
+
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-outline-secondary ml-2" type="button" data-bs-toggle="collapse" id="filterToggle" data-bs-target="#collapseFilter" aria-expanded="false" aria-controls="collapseFilter">
+                Filter/Search @ViewData["numberFilters"]
+            </button>
+        </div>
+    </div>
+
+    <div class="row collapse" id="collapseFilter">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="searchString">Search by Project Name:</label>
+                    <input type="text" name="searchString" class="form-control" placeholder="Enter project name" value="@ViewBag.SearchString" />
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="startDateFilter">Start Date:</label>
+                    <input type="date" name="startDateFilter" class="form-control" value="@ViewBag.StartDateFilter?.ToString("yyyy-MM-dd")" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="endDateFilter">End Date:</label>
+                    <input type="date" name="endDateFilter" class="form-control" value="@ViewBag.EndDateFilter?.ToString("yyyy-MM-dd")" />
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <button type="submit" class="btn btn-primary">Filter</button>
+                <button type="button" class="btn btn-secondary ml-2" onclick="clearFilters()">Clear Filters</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="table-responsive">
+    <table class="table table-sm" style="font-size: 16px;">
+        <thead>
+            <tr class="table-dark">
+                <th>Project Name</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Location</th>
+                <th class="text-center" style="min-width:140px">
+                    @if (!User.IsInRole("Designer") && !User.IsInRole("Sales Assoc"))
+                        {
+                    <a asp-controller="ClientProject" asp-action="Add" asp-route-ClientId="@clients.ClientId"
+                       class="btn btn-sm btn-outline-success"
+                       role="button" data-bs-toggle="tooltip" title="Add New">
+                        <strong>&#x270D; Add </strong>
+                    </a>
+                        }
+                </th>
+            </tr>
+
+        </thead>
+
+        <tbody id="projectTableBody">
+            @foreach (var item in Model)
+            {
+                <tr class="table-dark">
+                    <td>@Html.DisplayFor(modelItem => item.ProjectName)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ProjectStartDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.ProjectEndDate)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Location.LocationName)</td>
+                    <td class="text-center" style="padding:5px;">
+                        <a asp-controller="ClientProject" asp-action="Update" asp-route-id="@item.ProjectId" class="btn btn-sm btn-outline-primary"
+                           role="button" data-bs-toggle="tooltip" title="Update @ViewData["ControllerFriendlyName"]">
+                            &#x270E;
+                        </a>
+                        <a asp-controller="ClientProject" asp-action="Details" asp-route-id="@item.ProjectId" class="btn btn-sm btn-outline-primary"
+                           role="button" data-bs-toggle="tooltip" title="@ViewData["ControllerFriendlyName"] Details">
+                            &#x1F50E;
+                        </a>
+                        @if (!User.IsInRole("Designer") && !User.IsInRole("Sales Assoc"))
+                        {
+                            <a asp-controller="ClientProject" asp-action="Remove" asp-route-id="@item.ProjectId" class="btn btn-sm btn-outline-primary"
+                            role="button" data-bs-toggle="tooltip" title="Remove @ViewData["ControllerFriendlyName"]">
+                                &#x274C;
+                            </a>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+</div>
+<div>
+    <a asp-action="Edit" asp-controller="Clients" class="btn btn-primary" asp-route-id="@clients.ClientId">Edit Client</a> |
+    <a asp-controller="Clients" class="btn btn-outline-secondary ml-2" asp-action="Index">Back to Client List</a>
+</div>
+<script>
+    function clearFilters() {
+        document.querySelector('input[name="searchString"]').value = "";
+        document.querySelector('select[name="clientId"]').value = "";
+        document.querySelector('input[name="startDateFilter"]').value = "";
+        document.querySelector('input[name="endDateFilter"]').value = "";
+
+        // Show all rows in the table
+        var tableBody = document.getElementById("projectTableBody");
+        var rows = tableBody.getElementsByTagName("tr");
+
+        for (var i = 0; i < rows.length; i++) {
+            rows[i].style.display = "";
+        }
+
+        // Trigger form submission
+        document.querySelector('form').submit();
+    }
+
+
+
+</script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const readMoreLinks = document.querySelectorAll(".read-more");
+
+        readMoreLinks.forEach(function (link) {
+            link.addEventListener("click", function (event) {
+                event.preventDefault();
+                const targetId = this.getAttribute("data-target");
+                const moreText = document.getElementById(targetId);
+
+                if (moreText.style.display === "none" || moreText.style.display === "") {
+                    moreText.style.display = "inline";
+                    this.textContent = "Read Less";
+                } else {
+                    moreText.style.display = "none";
+                    this.textContent = "Read More";
+                }
+            });
+        });
+    });
+</script>

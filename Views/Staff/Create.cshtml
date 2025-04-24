@@ -1,0 +1,56 @@
+﻿@model NBD3.Models.Staff
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Staff</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <div class="form-group">
+                    <label for="thePicture" class="control-label">Upload Image:</label>
+                    <input type="file" class="form-control" name="pictureFile" id="pictureFile" />
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffTitle" class="control-label"></label>
+                <input asp-for="StaffTitle" class="form-control" placeholder="Enter title..."/>
+                <span asp-validation-for="StaffTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffFirstName" class="control-label"></label>
+                <input asp-for="StaffFirstName" class="form-control" placeholder="Enter firstname..."/>
+                <span asp-validation-for="StaffFirstName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffLastname" class="control-label"></label>
+                <input asp-for="StaffLastname" class="form-control" placeholder="Enter lastname..." />
+                <span asp-validation-for="StaffLastname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffPhone" class="control-label"></label>
+                <input asp-for="StaffPhone" class="form-control" placeholder="(123)-456-7890"/>
+                <span asp-validation-for="StaffPhone" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="StaffEmail" class="control-label"></label>
+                <input asp-for="StaffEmail" class="form-control" placeholder="username@example.com"/>
+                <span asp-validation-for="StaffEmail" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+

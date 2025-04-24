@@ -1,0 +1,68 @@
+﻿@model NBD3.Models.Location
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>Location</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationName)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationPhone)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationPhone)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationContactPer)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationContactPer)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationStreetAddress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationStreetAddress)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationPostalCode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationPostalCode)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationCityAddress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationCityAddress)
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.LocationCountryAddress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.LocationCountryAddress)
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="Edit" class="btn btn-primary" asp-route-id="@Model?.LocationId">Edit</a>
+    &nbsp;
+    <a asp-action="Index" class="btn btn-outline-secondary">Back to List</a>
+</div>

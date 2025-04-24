@@ -1,0 +1,44 @@
+﻿@model NBD3.Models.Project
+
+@{
+    ViewData["Title"] = "Remove";
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to delete this?</h3>
+<div class="container mt-5">
+    <h4>Project</h4>
+    <hr />
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <div class="col-sm-4">
+                    <dt>Project Name:</dt>
+                    <dd>@Model.ProjectName</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Description:</dt>
+                    <dd>@Model.ProjectDescription</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Start Date:</dt>
+                    <dd>@Model.ProjectStartDate</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>End Date:</dt>
+                    <dd>@Model.ProjectEndDate</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Project Location:</dt>
+                    <dd>@Model.Location.LocationName</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+    <form asp-action="Remove">
+        <input type="hidden" asp-for="ProjectId" />
+        <input type="submit" value="Delete" class="btn btn-danger" /> |
+        <partial name="_BackToList" />
+    </form>
+</div>

@@ -1,0 +1,52 @@
+﻿@model NBD3.Models.Client
+
+@{
+    ViewData["Title"] = "Delete Client";
+}
+
+<div class="container mt-5 mb-4">
+    <h1>@ViewData["Title"]</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <dl class="row">
+                <div class="col-sm-4">
+                    <dt>Company Name:</dt>
+                    <dd>@Model.ClientCommpanyName</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>First Name:</dt>
+                    <dd>@Model.ClientFirstName</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Middle Name:</dt>
+                    <dd>@Model.ClientMiddleName</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Last Name:</dt>
+                    <dd>@Model.ClientLastName</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Phone:</dt>
+                    <dd>@Model.ClientPhone</dd>
+                </div>
+                <div class="col-sm-4">
+                    <dt>Email:</dt>
+                    <dd>@Model.ClientEmail</dd>
+                </div>
+                <div class="col-sm-12">
+                    <dt>Address:</dt>
+                    <dd>@Model.ClientStreetAddress, @Model.ClientCityAddress, @Model.ClientCountryAddress, @Model.ClientPostalCode</dd>
+                </div>
+            </dl>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <form id="deleteForm" asp-action="Delete">
+            <input type="hidden" asp-for="ClientId" />
+            <input type="submit" value="Delete" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-outline-secondary ml-2">Cancel</a>
+        </form>
+    </div>
+</div>

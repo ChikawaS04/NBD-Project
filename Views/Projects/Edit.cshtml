@@ -1,0 +1,122 @@
+﻿@model NBD3.Models.Project
+
+@{
+    ViewData["Title"] = "Edit Project";
+
+    var hasPicture = (Model.ProjectPhoto?.Content != null);
+    if (hasPicture)
+    {
+            @:<div>
+                string imageBase64 = Convert.ToBase64String(Model.ProjectPhoto.Content);
+                string imageSrc = string.Format("data:" + Model.ProjectPhoto.MimeType + ";base64,{0}", imageBase64);
+                <img src="@imageSrc" alt="Blueprint for @Model.ProjectName" title="Blueprint for @Model.ProjectName" class="img-fluid rounded" />
+            @:</div><hr />
+    }
+}
+
+<div class="container mt-5">
+    <h1 class="mb-4">@ViewData["Title"]</h1>
+
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ProjectId" />
+                <div class="form-group row">
+                    <div class="col-md-4">
+                    <label>Project Status</label>
+                    <select asp-for="ProjectStatus" class="form-control" asp-items="Html.GetEnumSelectList<ProjectStatusList>()"></select>
+                </div>
+                </div>
+                <!-- Project Information -->
+                <div class="form-section">
+                    <h2 class="mb-3">Project Information</h2>
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="ProjectName" class="control-label">Project Name:</label>
+                        <input asp-for="ProjectName" class="form-control" placeholder="Enter project name..." />
+                        <span asp-validation-for="ProjectName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="ProjectDescription" class="control-label">Description:</label>
+                        <textarea asp-for="ProjectDescription" class="form-control" placeholder="Enter project description..."></textarea>
+                        <span asp-validation-for="ProjectDescription" class="text-danger"></span>
+                    </div>
+                    <div>
+                        @{
+                            if (hasPicture)
+                            {
+                                <div class="row">
+                                    <div class="form-check m-3">
+                                        <input class="form-check-input" type="checkbox" id="chkRemoveImage" name="chkRemoveImage">
+                                        <label class="form-check-label" for="chkRemoveImage">
+                                        <strong>Check to remove Image</strong>
+                                        </label>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>                   
+                    <div class="form-group">
+                        <label class="control-label custom-file-label">Picture File:</label>
+                        <div class="input-group mb-3">
+                            <input type="file" class="form-control" name="pictureFile" id="pictureFile">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dates -->
+                <div class="form-section">
+                    <h2 class="mb-3">Dates</h2>
+                    <hr />
+                     <div class="form-group row">
+                    <div class="col-md-6">
+                        <label asp-for="ProjectStartDate" class="control-label"></label>
+                        <input asp-for="ProjectStartDate" class="form-control" value="@Model.ProjectStartDate.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label asp-for="ProjectEndDate" class="control-label"></label>
+                        <input asp-for="ProjectEndDate" class="form-control" value="@Model.ProjectEndDate?.ToString("yyyy-MM-dd")" />
+                        <span asp-validation-for="ProjectEndDate" class="text-danger"></span>
+                    </div>
+               </div>
+                </div>
+
+                <!-- Client and Location Information -->
+                <div class="form-section">
+                    <h2 class="mb-3">Info</h2>
+                    <hr />
+                    <div class="form-group row">
+                        <div class="col-md-6">
+                            <label asp-for="ClientId" class="control-label">Client:</label>
+                            <select asp-for="ClientId" class="form-control" asp-items="ViewBag.ClientId">
+                                <option value="">-- Select Client --</option>
+                            </select>
+                            <span asp-validation-for="ClientId" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-6">
+                            <label asp-for="LocationId" class="control-label">Project Location:</label>
+                            <select asp-for="LocationId" class="form-control" asp-items="ViewBag.LocationId">
+                                <option value="">-- Select Location --</option>
+                            </select>
+                            <span asp-validation-for="LocationId" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <a asp-action="Index" class="btn btn-outline-secondary ml-2">Back to Project List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

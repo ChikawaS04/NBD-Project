@@ -1,0 +1,75 @@
+﻿@model NBD3.Models.Project
+
+@{
+    ViewData["Title"] = "Add Project";
+}
+
+<h1>Add New Project</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-8">
+        <form asp-action="Add" method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="ClientId" />
+
+            <div class="form-section">
+                <h2 class="mb-3">Project Information</h2>
+                <hr />
+                <div class="form-group">
+                    <label asp-for="ProjectName" class="control-label">Project Name:</label>
+                    <input asp-for="ProjectName" class="form-control" placeholder="Enter project name..." />
+                    <span asp-validation-for="ProjectName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="ProjectDescription" class="control-label">Description:</label>
+                    <textarea asp-for="ProjectDescription" class="form-control" placeholder="Enter project description..."></textarea>
+                    <span asp-validation-for="ProjectDescription" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2 class="mb-3">Dates</h2>
+                <hr />
+                <div class="form-group row">
+                    <div class="col-md-6">
+                        <label asp-for="ProjectStartDate" class="control-label">Start Date:</label>
+                        <input asp-for="ProjectStartDate" class="form-control" placeholder="Enter start date..." />
+                        <span asp-validation-for="ProjectStartDate" class="text-danger"></span>
+                    </div>
+                    <div class="col-md-6">
+                        <label asp-for="ProjectEndDate" class="control-label">End Date:</label>
+                        <input asp-for="ProjectEndDate" class="form-control" placeholder="Enter end date..." />
+                        <span asp-validation-for="ProjectEndDate" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-section">
+                <h2 class="mb-3">Info</h2>
+                <hr />
+                <div class="form-group row">
+                   
+                    <div class="col-md-6">
+                    <div>
+                            <label style="color:red;font-size14px;">!</label>
+                            <label asp-for="LocationId" class="control-label"> Project Location:</label>
+                        </div>
+                   
+                    <select asp-for="LocationId" class="form-control" asp-items="ViewBag.LocationId">
+                        <option value="">-- Select Location --</option>
+                    </select>
+                    <span asp-validation-for="LocationId" class="text-danger"></span>
+                </div>
+                </div>
+                </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />|
+                <partial name="_BackToList" />
+            </div>
+        </form>
+    </div>
+</div>
+
+

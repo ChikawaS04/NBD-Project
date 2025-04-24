@@ -1,0 +1,105 @@
+﻿@model NBD3.Models.Client
+
+@{
+    ViewData["Title"] = "Edit Client";
+}
+
+<h1>Edit Client</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="ClientId" />
+
+                <!-- Personal Information -->
+                <div class="form-section">
+                    <h4>Personal Information</h4>
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="ClientCommpanyName" class="control-label"></label>
+                        <input asp-for="ClientCommpanyName" class="form-control" placeholder="Enter company name..." />
+                        <span asp-validation-for="ClientCommpanyName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="ClientFirstName" class="control-label">First Name</label>
+                            <input asp-for="ClientFirstName" class="form-control" placeholder="Enter first name..." />
+                            <span asp-validation-for="ClientFirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="col">
+                            <label asp-for="ClientMiddleName" class="control-label">Middle Name</label>
+                            <input asp-for="ClientMiddleName" class="form-control" placeholder="Enter middle name..." />
+                            <span asp-validation-for="ClientMiddleName" class="text-danger"></span>
+                        </div>
+
+                        <div class="col">
+                            <label asp-for="ClientLastName" class="control-label">Last Name</label>
+                            <input asp-for="ClientLastName" class="form-control" placeholder="Enter last name..." />
+                            <span asp-validation-for="ClientLastName" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="form-section">
+                    <h4>Contact Information</h4>
+                    <hr />
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="ClientPhone" class="control-label">Phone</label>
+                            <input asp-for="ClientPhone" class="form-control" placeholder="(123)-456-7890" />
+                            <span asp-validation-for="ClientPhone" class="text-danger"></span>
+                        </div>
+
+
+                        <div class="col">
+                            <label asp-for="ClientEmail" class="control-label">Email</label>
+                            <input asp-for="ClientEmail" class="form-control" placeholder="username@example.com" />
+                            <span asp-validation-for="ClientEmail" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Address Information -->
+                <div class="form-section">
+                    <h4>Address Information</h4>
+                    <hr />
+                    <div class="form-group">
+                        <label asp-for="ClientStreetAddress" class="control-label">Street Address</label>
+                        <input asp-for="ClientStreetAddress" class="form-control" placeholder="Enter street address..." />
+                        <span asp-validation-for="ClientStreetAddress" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group row">
+                        <div class="col">
+                            <label asp-for="ClientPostalCode" class="control-label">Postal Code</label>
+                            <input asp-for="ClientPostalCode" class="form-control" placeholder="A1A 1A1" />
+                            <span asp-validation-for="ClientPostalCode" class="text-danger"></span>
+                        </div>
+
+                        <div class="col">
+                            <label asp-for="ClientCityAddress" class="control-label">City</label>
+                            <input asp-for="ClientCityAddress" class="form-control" placeholder="Enter city..." />
+                            <span asp-validation-for="ClientCityAddress" class="text-danger"></span>
+                        </div>
+
+                        <div class="col">
+                            <label asp-for="ClientCountryAddress" class="control-label">Country</label>
+                            <input asp-for="ClientCountryAddress" class="form-control" placeholder="Enter country..." readonly />
+                            <span asp-validation-for="ClientCountryAddress" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                    &nbsp;
+                    <a asp-action="Index" class="btn btn-outline-secondary">Back to Client List</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

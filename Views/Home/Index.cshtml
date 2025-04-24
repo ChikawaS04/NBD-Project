@@ -1,0 +1,271 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Other head content -->
+    <link rel="stylesheet" href=https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css>
+</head>
+<style>
+    
+    .border-success-custom {
+        color: #fff;
+    }
+
+    .stats-container .card {
+        height: 100px; 
+        width: 90%; 
+    }
+
+    .stats-title {
+        font-size: 18px;
+    }
+
+    .stats-value {
+        font-size: 36px; 
+    }
+
+    .stats-container .card-body:hover .fa-chevron-right {
+        right: 30px;
+        opacity: 1;
+    }
+
+    .stats-container .card-body .fa-chevron-right {
+        position: absolute;
+        right: 0;
+        bottom: 50%;
+        transform: translateY(50%);
+        color: #007bff;
+        transition: all 0.3s ease;
+        opacity: 0;
+    }
+
+    .stats-container .card-body:hover .fa-chevron-right {
+        right: 15px;
+        opacity: 1;
+    }
+
+
+    .success {
+        background-color: #28a745;
+        color: #fff;
+    }
+
+    .warning {
+        background-color: #ffc107;
+        color: #333;
+    }
+
+    .danger {
+        background-color: #dc3545;
+        color: #fff;
+    }
+
+    .project-box {
+        width: 200px; 
+        height: 250px; 
+        overflow: hidden;
+        position: relative;
+    }
+
+    .arrow-icon {
+        position: absolute;
+        bottom: 10px; 
+        left: 50%;
+        transform: translateX(-50%);
+        color: white;
+        font-size: 24px;
+    }
+
+    .card-text {
+        font-size: small; 
+    }
+
+</style>
+
+<div class="container text-center" style="padding-top: 50px; padding-bottom: 50px;">
+    <h1 class="display-4">Welcome back to NBD</h1><br />
+    @if (!User.IsInRole("Admin"))
+    {
+        <p>Visit our website <a href=https://naturalbydesign.com>www.naturalbydesign.com</a>.</p>
+
+        <section class="section" style="margin-bottom: 50px;">
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Client Section</h2>
+                            <p class="card-text">Manage your clients and their data efficiently.</p>
+                            <a class="btn btn-primary" asp-controller="Clients" asp-action="Index">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Projects and Maintenance</h2>
+                            <p class="card-text">Track your ongoing projects and schedule maintenance tasks easily.</p>
+                            <a class="btn btn-primary" asp-controller="Projects" asp-action="Index">Explore</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title">Bids</h2>
+                            <p class="card-text">Submit and manage bids for new projects effortlessly.</p>
+                            <a class="btn btn-primary" asp-controller="Bid" asp-action="Index">Explore</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+    else
+    {
+        <h2 class="section-heading">Bid Section</h2><br />
+        <section class="stats-container" style="margin-bottom: 100px;">
+            <div class="row">
+            <div class="col-md-3">
+                <div class="card card-raised border-start border-success-custom border-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div>
+                                <h3 class="stats-title text-success-custom">Total Bids</h3>
+                                <p class="stats-value text-warning">@ViewBag.TotalBids</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <a>
+                    <div class="card card-raised border-start border-success border-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="stats-title">Approved Bids</h3>
+                                    <p class="stats-value text-warning">@ViewBag.ApprovedBids</p>
+                                </div>
+                                <i class="fas fa-chevron-right text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a>
+                    <div class="card card-raised border-start border-warning border-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="stats-title">Pending Bids</h3>
+                                    <p class="stats-value text-warning">@ViewBag.PendingBids</p>
+                                </div>
+                                <i class="fas fa-chevron-right text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-3">
+                <a>
+                    <div class="card card-raised border-start border-danger border-4">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h3 class="stats-title">Rejected Bids</h3>
+                                    <p class="stats-value text-warning">@ViewBag.RejectedBids</p>
+                                </div>
+                                <i class="fas fa-chevron-right text-primary"></i>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+    }
+
+
+
+    @*  <h2 class="section-heading">Project Status Section</h2>
+    <!-- Dropdown list to filter projects by status -->
+    <div class="form-group">
+    <label for="statusSelect">Select Project Status:</label>
+    <p></p>
+    <select class="form-control" id="statusSelect" onchange="filterProjects()">
+    <option value="All" selected>All</option>
+    @foreach (var status in ViewBag.Statuses)
+    {
+    <option value="@status">@status</option>
+    }
+    </select>
+
+    </div>
+
+
+    <div class="row">
+    @foreach (var project in ViewBag.Projects)
+    {
+    <div class="col-md-3 mb-4">
+    <div class="project-box card">
+    <div class="card-body">
+    <h5 class="card-title text-white">@project.ProjectName</h5>
+    <p class="card-text text-white">Start Date: @project.ProjectStartDate.ToShortDateString()</p>
+    <p class="card-text text-white">End Date: @(project.ProjectEndDate?.ToString("yyyy-MM-dd"))</p>
+    <p class="card-text text-white">Bid Amounts:</p>
+    <ul>
+    @{
+    int bidIndex = 1;
+    foreach (var bid in project.Bids)
+    {
+    <li class="text-white">Bid @bidIndex: @bid.BidAmount</li>
+    bidIndex++;
+    }
+    if (bidIndex == 1)
+    {
+    <li>No bids available for this project.</li>
+    }
+    }
+    </ul>
+    </div>
+    <a href="@Url.Action("Details", "Projects", new { id = project.ProjectId })" class="arrow-link">
+    <i class="arrow-icon fas fa-arrow-right text-primary"></i>
+    </a>
+    </div>
+    </div>
+    }
+    </div>
+    *@
+
+    <section class="section">
+        <div class="row">
+            <div class="col-12 card">
+                <div class="card-body">
+                    <h2 class="card-title">About Natural by Design Application</h2>
+                    <p class="card-text">Natural by Design Application is a user-friendly software solution for landscaping professionals. It helps manage clients, projects, maintenance, and bids efficiently in one place.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+    function filterProjects() {
+        console.log('filterProjects function called');
+        var status = document.getElementById("statusSelect").value;
+        var projectBoxes = document.getElementsByClassName("project-box");
+        for (var i = 0; i < projectBoxes.length; i++) {
+            var projectStatus = projectBoxes[i].getAttribute("data-status");
+            if (status === "" || projectStatus === status) {
+                projectBoxes[i].style.display = "block";
+            } else {
+                projectBoxes[i].style.display = "none";
+            }
+        }
+    }
+</script>
+
+
