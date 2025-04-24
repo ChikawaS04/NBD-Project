@@ -13,7 +13,7 @@ An ASP.NET Core internal web app for managing client projects, built for the Nat
 - Dockerized deployment
 
 ## 🚀 Live Demo
-Hosted on Render: [https://nbd3.onrender.com](https://nbd3.onrender.com)
+Hosted on Render: [https://nbd3.onrender.com](https://nbd3.onrender.com)](https://nbd-project.onrender.com)
 
 ## ⚙️ Technologies Used
 - ASP.NET Core 7.0
