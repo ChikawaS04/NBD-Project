@@ -16,4 +16,4 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 # Start the app
-ENTRYPOINT ["dotnet", "Natural_by_design.dll"]
+ENTRYPOINT ["dotnet", "NBD3.dll"]
